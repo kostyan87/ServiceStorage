@@ -33,7 +33,8 @@ public class StorageServiceImpl implements StorageService {
     @Override
     public String remove(String key) throws NoDataException {
         String data = storageDao.remove(key);
-        if (isNull(data)) throw new NoDataException("No data");
+        if (isNull(data))
+            throw new NoDataException("No data");
         return data;
     }
 

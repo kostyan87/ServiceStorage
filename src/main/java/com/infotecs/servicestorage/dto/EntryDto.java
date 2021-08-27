@@ -13,6 +13,12 @@ public class EntryDto implements Comparable<EntryDto> {
 
     private long ttl = System.currentTimeMillis() / 1000 + 2100L;
 
+    public EntryDto(String key, String value, long ttl) {
+        this.key = key;
+        this.value = value;
+        this.ttl = ttl;
+    }
+
     public String getKey() {
         return key;
     }
