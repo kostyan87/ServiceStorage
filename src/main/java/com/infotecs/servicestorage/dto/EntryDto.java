@@ -1,23 +1,22 @@
 package com.infotecs.servicestorage.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 
 public class EntryDto implements Comparable<EntryDto> {
 
+    @JsonProperty("key")
     @NotBlank(message = "Key should not be empty or null")
     private String key;
 
+    @JsonProperty("value")
     @NotBlank(message = "Value should not be empty or null")
     private String value;
 
+    @JsonProperty("ttl")
     private long ttl = System.currentTimeMillis() / 1000 + 2100L;
-
-    public EntryDto(String key, String value, long ttl) {
-        this.key = key;
-        this.value = value;
-        this.ttl = ttl;
-    }
 
     public String getKey() {
         return key;

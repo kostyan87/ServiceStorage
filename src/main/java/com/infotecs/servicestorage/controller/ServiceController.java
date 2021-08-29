@@ -1,13 +1,17 @@
 package com.infotecs.servicestorage.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.infotecs.servicestorage.dto.EntryDto;
 import com.infotecs.servicestorage.exceptions.NoDataException;
 import com.infotecs.servicestorage.service.StorageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
+import java.io.*;
 import java.util.Map;
 import java.util.TreeSet;
 
@@ -35,6 +39,13 @@ public class ServiceController {
     @ResponseStatus(HttpStatus.OK)
     public String remove(@PathVariable String key) throws NoDataException {
         return storageService.remove(key);
+    }
+
+    @RequestMapping(value = "/upload", method = RequestMethod.POST,
+            consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public String load(@RequestParam("file") MultipartFile file) throws IOException {
+        storageService.load(file);
+        return "Success";
     }
 
     // Test methods
