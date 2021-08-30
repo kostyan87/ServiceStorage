@@ -12,10 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.BufferedReader;
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -37,7 +34,7 @@ public class StorageServiceImpl implements StorageService {
         String data = storageDao.get(key);
         if (isNull(data))
             throw new NoDataException("No data");
-        return storageDao.get(key);
+        return data;
     }
 
     @Override
@@ -53,6 +50,27 @@ public class StorageServiceImpl implements StorageService {
         return data;
     }
 
+    public void load(MultipartFile file) throws IOException {
+        String s = fileManager.parseFileToString(file);
+        ObjectMapper mapper = new ObjectMapper();
+        EntryDto[] entryDtoList = mapper.readValue(s, EntryDto[].class);
+        storageDao.getData().clear();
+        storageDao.dump().clear();
+        for (EntryDto e: entryDtoList) {
+            set(e);
+        }
+    }
+
+    @Override
+    public String dump() throws JsonProcessingException {
+        TreeSet<EntryDto> dump = (TreeSet<EntryDto>)storageDao.dump().clone();
+        for (EntryDto e: dump) {
+            e.correctTtlForDump();
+        }
+        String json = new ObjectMapper().writeValueAsString(dump);
+        return json;
+    }
+
     @Override
     public Map<String, String> getAll() {
         return storageDao.getData();
@@ -60,18 +78,6 @@ public class StorageServiceImpl implements StorageService {
 
     @Override
     public TreeSet<EntryDto> getDeleteSet() {
-        return storageDao.getDeleteSet();
-    }
-
-    public void load(MultipartFile file) throws IOException {
-        String s = fileManager.parseFileToString(file);
-        ObjectMapper mapper = new ObjectMapper();
-        EntryDto[] entryDtoList = mapper.readValue(s, EntryDto[].class);
-        storageDao.getData().clear();
-        storageDao.getDeleteSet().clear();
-        for (EntryDto e:
-             entryDtoList) {
-            set(e);
-        }
+        return storageDao.dump();
     }
 }

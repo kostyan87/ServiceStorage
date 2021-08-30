@@ -9,7 +9,7 @@ public interface StorageDao {
 
     Map<String, String> getData();
 
-    TreeSet<EntryDto> getDeleteSet();
+    TreeSet<EntryDto> dump();
 
     String get(String key);
 

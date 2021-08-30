@@ -15,11 +15,11 @@ public class RemoveOnTimeServiceImpl implements RemoveOnTimeService {
     @Override
     @Scheduled(fixedDelay = 1000)
     public void removeOnTime() {
-        if (storageDao.getData().size() != 0) {
-            EntryDto deleteItem = storageDao.getDeleteSet().first();
-            if (System.currentTimeMillis() / 1000 == deleteItem.getTtl()) {
+        if (storageDao.dump().size() != 0) {
+            EntryDto deleteItem = storageDao.dump().first();
+            if (System.currentTimeMillis() / 1000 >= deleteItem.getTtl()) {
                 storageDao.remove(deleteItem.getKey());
-                storageDao.getDeleteSet().remove(deleteItem);
+                storageDao.dump().remove(deleteItem);
             }
         }
     }

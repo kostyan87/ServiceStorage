@@ -27,7 +27,7 @@ public class StorageDaoImpl implements StorageDao {
     }
 
     @Override
-    public TreeSet<EntryDto> getDeleteSet() {
+    public TreeSet<EntryDto> dump() {
         return deleteSet;
     }
 

@@ -45,6 +45,10 @@ public class EntryDto implements Comparable<EntryDto> {
             this.ttl = System.currentTimeMillis() / 1000 + ttl;
     }
 
+    public void correctTtlForDump() {
+        ttl = ttl - System.currentTimeMillis() / 1000;
+    }
+
     @Override
     public int compareTo(EntryDto o) {
         if (this.getKey().equals(o.getKey())) return 0;
