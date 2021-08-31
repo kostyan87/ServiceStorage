@@ -19,8 +19,6 @@ public class StorageDaoImpl implements StorageDao {
         deleteSet = new TreeSet<>();
     }
 
-    // Getters
-
     @Override
     public Map<String, String> getData() {
         return data;
@@ -30,8 +28,6 @@ public class StorageDaoImpl implements StorageDao {
     public TreeSet<EntryDto> dump() {
         return deleteSet;
     }
-
-    // StorageDao methods
 
     @Override
     public String get(String key) {
@@ -55,6 +51,16 @@ public class StorageDaoImpl implements StorageDao {
         deleteSet.removeIf((e) -> e.getKey().equals(key));
     }
 
-    // Methods for test
-
+    @Override
+    public TreeSet<EntryDto> getCopyOfDeleteSet() {
+        TreeSet<EntryDto> copy = new TreeSet<>();
+        for (EntryDto e: deleteSet) {
+            EntryDto copyEntry = new EntryDto();
+            copyEntry.setKey(e.getKey());
+            copyEntry.setValue(e.getValue());
+            copyEntry.setTtlForCopy(e.getTtl());
+            copy.add(copyEntry);
+        }
+        return copy;
+    }
 }

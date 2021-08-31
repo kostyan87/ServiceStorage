@@ -8,6 +8,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -39,5 +40,17 @@ public class ServiceExceptionHandler {
         return new ResponseEntity<Violation>(new Violation(
                 "JSON parse exception", field, e.getMessage()
         ), HttpStatus.BAD_GATEWAY);
+    }
+
+    @ExceptionHandler(JsonMappingException.class)
+    public ResponseEntity<String> JsonMappingExceptionHandler(
+            JsonMappingException e
+    ) {
+        return new ResponseEntity<String>(e.getMessage(), HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(IOException.class)
+    public ResponseEntity<String> IOExceptionHandler(IOException e) {
+        return new ResponseEntity<String>(e.getMessage(), HttpStatus.BAD_REQUEST);
     }
 }

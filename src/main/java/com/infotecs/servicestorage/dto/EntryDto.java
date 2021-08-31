@@ -45,6 +45,10 @@ public class EntryDto implements Comparable<EntryDto> {
             this.ttl = System.currentTimeMillis() / 1000 + ttl;
     }
 
+    public void setTtlForCopy(long ttl) {
+        this.ttl = ttl;
+    }
+
     public void correctTtlForDump() {
         ttl = ttl - System.currentTimeMillis() / 1000;
     }

@@ -16,4 +16,6 @@ public interface StorageDao {
     void set(EntryDto entryDto);
 
     String remove(String key);
+
+    TreeSet<EntryDto> getCopyOfDeleteSet();
 }

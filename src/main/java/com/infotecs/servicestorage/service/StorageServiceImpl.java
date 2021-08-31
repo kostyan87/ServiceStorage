@@ -1,20 +1,16 @@
 package com.infotecs.servicestorage.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.infotecs.servicestorage.dao.StorageDao;
 import com.infotecs.servicestorage.dto.EntryDto;
 import com.infotecs.servicestorage.exceptions.NoDataException;
 import com.infotecs.servicestorage.file.FileManager;
-import org.springframework.aop.target.LazyInitTargetSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.*;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 import java.util.TreeSet;
 
@@ -63,7 +59,7 @@ public class StorageServiceImpl implements StorageService {
 
     @Override
     public String dump() throws JsonProcessingException {
-        TreeSet<EntryDto> dump = (TreeSet<EntryDto>)storageDao.dump().clone();
+        TreeSet<EntryDto> dump = storageDao.getCopyOfDeleteSet();
         for (EntryDto e: dump) {
             e.correctTtlForDump();
         }

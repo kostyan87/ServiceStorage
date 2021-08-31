@@ -73,7 +73,7 @@ public class ServiceController {
                 .body(resource);
     }
 
-    // Test methods
+    // Other methods
 
     @RequestMapping(method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
